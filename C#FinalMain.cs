@@ -7,15 +7,15 @@ namespace FinalProj
     {
         public class User()
         {
-            private string password;
-            private string userName;
-            public SortedDictionary<string, string> users;
-            public string Password
+            private string? password;
+            private string? userName;
+            private SortedDictionary<string, string> users;
+            public string? Password
             {
                 get { return password; }
                 set
                 {
-                    if (value == "")
+                    if (value == null)
                     {
                         Console.WriteLine("Please Try Again\n");
                     }
@@ -25,12 +25,12 @@ namespace FinalProj
                     }
                 }
             }
-            public string UserName
+            public string? UserName
             {
                 get { return userName; }
                 set
                 {
-                    if (value == "")
+                    if (value == null)
                     {
                         Console.WriteLine("Please Try Again\n");
                     }
@@ -47,47 +47,62 @@ namespace FinalProj
                 {
                     users.Add(userName, password);
                 }
-
             }
-            internal class MainProgram
+        }
+        internal class MainProgram
+        {
+            static void Main(string[] args)
             {
-                static void Main(string[] args)
+                User user = new User();
+                while (true)
                 {
-                    User user = new User();
-                    user.users = new SortedDictionary<string, string>();
-                    while (true)
+                    Console.WriteLine("Enter Your option: \n1. Login\n2. Sign up\n3. View users\n4. Exit Program");
+                    int? userIn = Convert.ToInt32(Console.ReadLine());
+                    if (userIn == 1)
                     {
-                        Console.WriteLine("Enter Your option: \n1. Login\n2. View users\n3. Exit Program");
-                        int? userIn = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("");
-                        if (userIn == 1)
+                        Console.WriteLine("Enter Your username: ");
+                        string? username = Console.ReadLine();
+                        Console.WriteLine("Enter Your password: ");
+                        string? pass = Console.ReadLine();
+                        foreach (KeyValuePair<string, string> kvp in user.Users)
                         {
-                            Console.WriteLine("Enter Your username: ");
-                            string? username = Console.ReadLine();
-                            Console.WriteLine("Enter Your password: ");
-                            string? pass = Console.ReadLine();
-                            user.Password = pass;
-                            user.UserName = username;
-                            user.users.Add(username, pass);
-                        }
-
-                        else if (userIn == 2)
-                        {
-                            foreach (KeyValuePair<string, string> kv in user.users)
+                            if ((kvp.Key == username) && (kvp.Value == pass))
                             {
-                                Console.WriteLine("Username: " + kv.Key + " " + "Password: " + kv.Value);
+                                Console.WriteLine("Welcome " + kvp.Key);
+                            }
+                            else if ((kvp.Key != username) | (kvp.Value != pass))
+                            {
+                                Console.WriteLine("UserName or password incorrect");
                             }
                         }
+                    }
 
-                        else if (userIn == 3)
+                    else if (userIn == 2)
+                    {
+                        Console.WriteLine("Enter Your username: ");
+                        string? username = Console.ReadLine();
+                        Console.WriteLine("Enter Your password: ");
+                        string? pass = Console.ReadLine();
+                        user.Password = pass;
+                        user.UserName = username;
+                        user.Users.Add(pass, username);
+                    }
+
+                    else if (userIn == 3)
+                    {
+                        foreach (KeyValuePair<string, string> kv in user.Users)
                         {
-                            Console.WriteLine("Exiting Program");
-                            break;
+                            Console.WriteLine(kv.Key + " " + kv.Value);
                         }
+                    }
+
+                    else if (userIn == 4)
+                    {
+                        Console.WriteLine("Exiting Program");
+                        break;
                     }
                 }
             }
         }
     }
 }
-
